@@ -1,0 +1,14 @@
+build/
+dist/
+.codex-remote-attachments/
+.vs/
+.idea/
+__pycache__/
+*.pyc
+.env
+.env.*
+!.env.example
+*.pex
+*.bak
+*.log
+*.dmp

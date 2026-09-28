@@ -1,0 +1,75 @@
+[b]Clear Sight — High Contrast Accessibility[/b]
+
+Make Skyrim's scenery quieter and its characters and quest targets easier to distinguish. Clear Sight gives the world a reduced-detail greyscale treatment and highlights living characters and important objects with configurable colours, inspired by the accessibility modes in The Last of Us Part II and God of War Ragnarök.
+
+[b]Experimental release — version 0.3.13[/b]
+For Windows Steam Skyrim SE runtime 1.7.104.0 only, using the vanilla renderer. An intermittent crash when loading older saves has been reported. This release adds loading safeguards, but the cause and resolution are not yet confirmed. Keep backup saves and try this build in a separate mod-manager profile before relying on it for a long playthrough.
+
+[b]What the colours mean[/b]
+[list]
+[*]Blue: living non-hostile characters, including the player, followers and people you need to follow.
+[*]Red: living actors Skyrim currently considers hostile to the player.
+[*]Yellow: non-actor quest targets, quest objects and detected doors on active quest routes.
+[*]Grey: scenery and dead bodies. Supported fire, blood and particle effects are desaturated too.
+[/list]
+Blue does not necessarily mean a story ally. Characters in scripted scenes use Skyrim's current hostility state. Following a quest NPC does not turn them yellow; corpses stay grey.
+
+[b]Features[/b]
+[list]
+[*]Reduced texture colour and detail while retaining normal-map shading, transparency and shape.
+[*]Menus, dialogue text and HUD remain untreated. World treatment is bypassed in inventory/map and other non-overlay menus.
+[*]Separate character, face and scenery detail settings; adjustable shadow lift for dark scenery.
+[*]Neutral illumination from supported fire/magic local lights to reduce unwanted colour casts.
+[*]Change the three highlight colours independently using names, hex colours or RGB values.
+[*]Enabled by default. Toggle with Ctrl + Shift + H.
+[*]Native SKSE plugin: no ESP, Papyrus scripts, MCM or ReShade required.
+[/list]
+
+[b]Requirements[/b]
+[list]
+[*]Windows PC, Steam Skyrim Special Edition executable 1.7.104.0.
+[*][url=https://skse.silverlock.org/]SKSE64 2.3.1[/url], labelled the Anniversary Edition build. Compatibility depends on the executable version, not ownership of the Anniversary Upgrade content.
+[*][url=https://www.nexusmods.com/skyrimspecialedition/mods/32444?tab=files]Address Library All in One (1.7.104.0) v13[/url]. Download the main file, not the developer Offsets file.
+[/list]
+This release rejects other game runtimes. It does not support Skyrim VR, GOG builds, Legendary Edition or consoles. ENB and Community Shaders are not supported; detected installations disable the hooks.
+
+[b]Installation with Vortex[/b]
+1. Close Skyrim and install the requirements.
+2. Install the main ZIP with Vortex's Install From File, or Mod Manager Download once available. Leave Mod Type as Default.
+3. Enable the mod and Deploy Mods.
+4. Launch Skyrim through SKSE and load a save. Treatment resumes after the loading screen closes and the world has remained ready for approximately 1.5 seconds.
+5. Press Ctrl + Shift + H to toggle. On a MacBook streaming through Moonlight, use Control, not Command.
+
+The installed files are Data/SKSE/Plugins/ClearSight.dll and ClearSight.ini. No plugin needs enabling in an ESP load order. Disable earlier Clear Sight packages before updating. If upgrading from the old SkyrimHighContrast prototype, remove/disable that DLL and its ReShade technique as well. Do not run two versions together.
+
+[b]Configuration[/b]
+Open the mod's staging folder in Vortex and edit SKSE/Plugins/ClearSight.ini. Under [Palette]:
+[code]
+Ally=Blue
+Enemy=Red
+Important=Yellow
+[/code]
+Named colours: Blue, Red, Yellow, Green, Cyan, Purple, Magenta, Orange, White, Grey/Gray and Black. Custom examples: Ally=#00AFFF or Ally=0.15,0.55,1.00.
+
+Set NonHostileActorsBlue=0 under [General] for blue teammates and grey neutral NPCs. Other options include WorldDetail, ActorDetail, FaceDetail, HighlightScale, SceneryShadowLift and SceneryShadowRange. Deploy and restart Skyrim after editing. Existing 0.3.12 settings can be retained when updating to 0.3.13.
+
+[b]Known limitations[/b]
+[list]
+[*]Intermittent save-loading CTD remains under investigation. 0.3.13 is not a confirmed fix.
+[*]Quest highlighting depends on game quest data. Invisible objective markers use the nearest loaded door within a limited radius in the same spatial context; closely grouped doors can be ambiguous. Unmarked puzzle gates and every narratively important object cannot be inferred.
+[*]Some shader variants and modded assets may remain untreated. Other post-processing mods can change the final appearance. Not all plants, trees, effects or mod combinations have been checked in game.
+[*]First-use texture conversion may hitch. The derived texture cache defaults to 256 MB; source textures and shader caches use additional memory. This is not an FPS optimisation mod.
+[*]Dark-scene detail and face readability can still vary. Default palette tests exceed 3:1 against the reference grey, but this is not a guarantee of final on-screen contrast in every scene or a WCAG conformance claim.
+[/list]
+
+[b]Testing and bug reports[/b]
+Compilation, automated classification tests, Direct3D WARP rendering tests and archive integrity checks pass. These do not establish game-wide stability. Please report your game version, mod list, location, whether the crash occurred loading from the main menu or from another save, and steps to reproduce. Include ClearSight.log from Documents/My Games/Skyrim Special Edition/SKSE and a crash log if available. Preserve the logs before restarting, as Clear Sight's log is overwritten on launch. Avoid posting personal information from paths or logs.
+
+To uninstall, close Skyrim, disable/remove the mod in Vortex and deploy. Clear Sight does not write save data or change quests.
+
+[b]Credits, source and permissions[/b]
+Built with CommonLibSSE-NG (alandtse CommonLibVR), Microsoft DirectXShaderCompiler components, DirectXTK, DirectXMath, fmt, spdlog and rapidcsv. Full third-party notices are included.
+
+The plugin is GPL-3.0-or-later with the supplied modding/linking exceptions. Corresponding source and build instructions are provided in the separate Source download. Please retain notices and meet the source-distribution obligations when redistributing modified builds. Third-party components keep their own licences.
+
+Code and documentation were developed using OpenAI Codex. The cover thumbnail is AI-generated promotional art, not a gameplay screenshot. No assets from the inspiration games are included. This is an unofficial mod and is not affiliated with Bethesda, Naughty Dog or Santa Monica Studio.

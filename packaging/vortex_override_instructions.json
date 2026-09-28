@@ -1,0 +1,11 @@
+[
+  {
+    "type": "setmodtype",
+    "value": "dinput"
+  },
+  {
+    "type": "copy",
+    "source": "reshade-shaders/Shaders/SkyrimHighContrast.fx",
+    "destination": "reshade-shaders/Shaders/SkyrimHighContrast.fx"
+  }
+]
