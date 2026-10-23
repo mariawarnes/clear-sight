@@ -1,5 +1,5 @@
 [CmdletBinding()]
-param([switch]$TestsOnly)
+param([switch]$TestsOnly, [string]$BuildName = 'native')
 $ErrorActionPreference = 'Stop'
 $root = Split-Path -Parent $PSScriptRoot
 $vswhere = 'C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe'
@@ -35,7 +35,7 @@ if ($TestsOnly) {
     }
     & $vcpkg install spdlog:x64-windows-static rapidcsv:x64-windows-static directxtk:x64-windows-static
     if ($LASTEXITCODE) { throw 'C++ dependency build failed.' }
-    $buildDir = Join-Path $root 'build/native'
+    $buildDir = Join-Path $root "build/$BuildName"
     $toolchain = Join-Path $vcpkgRoot 'scripts/buildsystems/vcpkg.cmake'
     $argsList += @('-B', $buildDir, '-DHC_BUILD_PLUGIN=ON', "-DCMAKE_TOOLCHAIN_FILE=$toolchain", '-DVCPKG_TARGET_TRIPLET=x64-windows-static', '-DVCPKG_MANIFEST_MODE=OFF')
 }
@@ -46,6 +46,6 @@ if ($LASTEXITCODE) { throw 'Native compilation failed.' }
 & (Join-Path $buildDir 'Release/ClearSightTests.exe')
 if ($LASTEXITCODE) { throw 'Native GPU tests failed.' }
 if (-not $TestsOnly) {
-    & $cmake --install $buildDir --config Release --component Native --prefix (Join-Path $root 'build/clear-sight-package')
+    & $cmake --install $buildDir --config Release --component Native --prefix (Join-Path $root $(if ($BuildName -eq 'native') { 'build/clear-sight-package' } else { "build/$BuildName-package" }))
     if ($LASTEXITCODE) { throw 'Package staging failed.' }
 }

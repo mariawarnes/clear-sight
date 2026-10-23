@@ -11,6 +11,7 @@
 #include "GreyscaleShader.h"
 #include "Palette.h"
 #include "LightColourScope.h"
+#include "A11yApi.h"
 #include <atomic>
 #include <chrono>
 #include <cmath>
@@ -502,6 +503,34 @@ struct MaterialHook {
     }
 };
 
+// Accessibility menu hookup (A11y Control Panel). Optional: nothing happens unless the
+// panel is installed and sends its request.
+const A11ySettingInfo a11ySettings[] = {
+    {"clearsight.enabled", "High contrast",
+     "Colours allies blue, enemies red and important objects yellow against muted scenery. Also toggled in game with Ctrl+Shift+H.",
+     A11Y_TOGGLE, 0, 1, 1, "contrast", 0}};
+int32_t A11yGet(const char* id, double* value)
+{
+    if (!id || !value || std::string_view(id) != "clearsight.enabled") return 0;
+    *value = enabled.load() ? 1.0 : 0.0;
+    return 1;
+}
+int32_t A11ySet(const char* id, double value)
+{
+    if (!id || std::string_view(id) != "clearsight.enabled") return 0;
+    enabled = value != 0.0;
+    spdlog::info("Mode {} (accessibility menu)", enabled ? "on" : "off");
+    return 1;
+}
+const A11yModInterface a11yInterface{A11Y_API_VERSION, "clearsight", "Clear Sight", "Vision",
+                                     static_cast<std::uint32_t>(std::size(a11ySettings)), a11ySettings, A11yGet, A11ySet};
+void OnPanelMessage(SKSE::MessagingInterface::Message* message)
+{
+    if (message->type != A11Y_MSG_REQUEST || message->dataLen != sizeof(A11yHost)) return;
+    auto* host = static_cast<A11yHost*>(message->data);
+    if (host && host->version == A11Y_API_VERSION && host->registerMod) host->registerMod(&a11yInterface);
+}
+
 void OnMessage(SKSE::MessagingInterface::Message* message)
 {
     if (message->type == SKSE::MessagingInterface::kDataLoaded) {
@@ -565,5 +594,6 @@ SKSE_PLUGIN_LOAD(const SKSE::LoadInterface* skse)
     HC::ReadConfig();
     spdlog::info("Clear Sight - High Contrast Accessibility 0.3.13; runtime {}", skse->RuntimeVersion().string());
     if (!std::filesystem::exists("enbseries.ini")) HC::RendererInit::Install();
+    SKSE::GetMessagingInterface()->RegisterListener("A11yControlPanel", HC::OnPanelMessage);
     return SKSE::GetMessagingInterface()->RegisterListener(HC::OnMessage);
 }
