@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<fomod>
+  <Name>Clear Sight - High Contrast Accessibility</Name>
+  <Author>mlw05</Author>
+  <Version>0.3.13</Version>
+  <Description>Experimental high-contrast accessibility mode: greyscale scenery, blue non-hostile characters, red enemies and yellow quest objects. Native SKSE plugin with separate builds for Skyrim 1.7.104 and 1.6.1170.</Description>
+  <Groups>
+    <element>Utilities</element>
+  </Groups>
+</fomod>

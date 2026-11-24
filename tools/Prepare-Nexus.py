@@ -33,6 +33,7 @@ for name in ('SOURCE-BUILD.md', 'LICENSING.md'):
     shutil.copy2(root / 'docs/release' / name, stage)
 shutil.copy2(root / 'docs/NATIVE-VALIDATION.md', stage)
 shutil.copy2(root / 'docs/NATIVE-INSTALL.md', stage)
+copy_source(root / 'packaging/fomod', stage / 'packaging/fomod')
 (stage / 'README.md').write_text('''# Clear Sight 0.3.13 source\n\nAuthor: mlw05. Read SOURCE-BUILD.md for build instructions and LICENSING.md for terms.\nThis is the corresponding-source download, not the installable mod.\n''', encoding='utf-8')
 
 lib = root / 'build/CommonLibSSE-NG'
@@ -93,7 +94,9 @@ for archive, reference in ((main_zip, root / 'build/clear-sight-package'), (sour
         if archive == source_zip:
             assert not any(Path(n).suffix.lower() in excluded_suffixes for n in names)
         else:
-            assert set(n for n in names if not n.startswith('ClearSight-Documentation/')) == {'SKSE/Plugins/ClearSight.dll', 'SKSE/Plugins/ClearSight.ini'}
+            assert set(n for n in names if not n.startswith('ClearSight-Documentation/')) == {
+                'fomod/info.xml', 'fomod/ModuleConfig.xml',
+                *(f'Runtime-{v}/SKSE/Plugins/ClearSight.{ext}' for v in ('1.7.104', '1.6.1170') for ext in ('dll', 'ini'))}
         (release / (archive.stem + '-CONTENTS.txt')).write_text('\n'.join(names) + '\n', encoding='utf-8')
         reports.append({'archive': archive.name, 'files': len(entries), 'bytes': archive.stat().st_size,
                         'sha256': digest(archive.read_bytes()), 'crc': 'passed', 'source_comparison': 'all files match staging'})

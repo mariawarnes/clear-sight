@@ -18,12 +18,12 @@ Do not add VR, performance optimisation or compatibility tags that have not been
 
 ## Short description
 
-Experimental high-contrast accessibility mode: greyscale scenery, blue non-hostile characters, red enemies and yellow quest objects. Configurable colours; menus and HUD stay unchanged. Requires Steam Skyrim 1.7.104.0, SKSE and Address Library.
+Experimental high-contrast accessibility mode: greyscale scenery, blue non-hostile characters, red enemies and yellow quest objects. Configurable colours; menus and HUD stay unchanged. Requires Steam Skyrim 1.7.104.0 or 1.6.1170.0, SKSE and Address Library.
 
 ## Requirements
 
-- Nexus requirement: Address Library for SKSE Plugins — https://www.nexusmods.com/skyrimspecialedition/mods/32444 — note: Main Files, Address Library All in One (1.7.104.0) v13.
-- External requirement: Skyrim Script Extender (SKSE64) — https://skse.silverlock.org/ — note: 2.3.1 for Steam Skyrim 1.7.104.0.
+- Nexus requirement: Address Library for SKSE Plugins — https://www.nexusmods.com/skyrimspecialedition/mods/32444 — note: Main Files, Address Library All in One — v13 for 1.7.104.0, or v11 (Anniversary Edition) for 1.6.1170.0.
+- External requirement: Skyrim Script Extender (SKSE64) — https://skse.silverlock.org/ — note: 2.3.1 for Steam Skyrim 1.7.104.0, or 2.2.6 for 1.6.1170.0.
 - No ReShade, SkyUI, MCM or Creation Kit requirement. No ESP/ESL.
 
 ## Main file
@@ -36,7 +36,7 @@ Version: 0.3.13
 
 File description:
 
-Native SKSE plugin for Steam Skyrim 1.7.104.0 only. Requires SKSE64 2.3.1 and Address Library v13. Vanilla renderer; no ENB/Community Shaders. Enabled by default; Ctrl+Shift+H toggles. Includes save-loading safeguards, but the reported intermittent CTD is not confirmed fixed. Install through Vortex as Default. No ESP. Read the known limitations before use.
+Native SKSE plugin for Steam Skyrim 1.7.104.0 or 1.6.1170.0; the installer asks which. Requires the matching SKSE64 (2.3.1 / 2.2.6) and Address Library (v13 / v11). Vanilla renderer; no ENB/Community Shaders. Enabled by default; Ctrl+Shift+H toggles. Includes save-loading safeguards, but the reported intermittent CTD is not confirmed fixed. Install through Vortex as Default (FOMOD). No ESP. Read the known limitations before use.
 
 ## Miscellaneous file
 

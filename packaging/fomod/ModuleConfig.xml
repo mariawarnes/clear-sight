@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://qconsulting.ca/fo3/ModConfig5.0.xsd">
+  <moduleName>Clear Sight - High Contrast Accessibility</moduleName>
+  <requiredInstallFiles>
+    <folder source="ClearSight-Documentation" destination="ClearSight-Documentation" />
+  </requiredInstallFiles>
+  <installSteps order="Explicit">
+    <installStep name="Skyrim version">
+      <optionalFileGroups order="Explicit">
+        <group name="Choose the build matching your SkyrimSE.exe version" type="SelectExactlyOne">
+          <plugins order="Explicit">
+            <plugin name="Skyrim 1.7.104">
+              <description>For SkyrimSE.exe 1.7.104.0 (current Steam release). Requires SKSE64 2.3.1 and Address Library for SKSE Plugins v13 (versionlib-1-7-104-0.bin).
+
+To check your version, right-click SkyrimSE.exe in the game folder, choose Properties, then Details, and read File version. The plugin refuses to load on any other version.</description>
+              <files>
+                <folder source="Runtime-1.7.104" destination="" priority="0" />
+              </files>
+              <typeDescriptor>
+                <type name="Optional" />
+              </typeDescriptor>
+            </plugin>
+            <plugin name="Skyrim 1.6.1170">
+              <description>For SkyrimSE.exe 1.6.1170.0 (the previous Anniversary Edition release, often kept by downgraded or modlist installs). Requires SKSE64 2.2.6 and Address Library for SKSE Plugins v11 (versionlib-1-6-1170-0.bin).
+
+To check your version, right-click SkyrimSE.exe in the game folder, choose Properties, then Details, and read File version. The plugin refuses to load on any other version.</description>
+              <files>
+                <folder source="Runtime-1.6.1170" destination="" priority="0" />
+              </files>
+              <typeDescriptor>
+                <type name="Optional" />
+              </typeDescriptor>
+            </plugin>
+          </plugins>
+        </group>
+      </optionalFileGroups>
+    </installStep>
+  </installSteps>
+</config>

@@ -16,11 +16,15 @@ The script builds the bundled CommonLib source. It downloads the pinned vcpkg to
 
 Outputs:
 
-- build/native/Release/ClearSight.dll
+- build/native/Release/ClearSight.dll (Skyrim 1.7.104)
+- build/native-1.6.1170/Release/ClearSight.dll (Skyrim 1.6.1170)
 - build/native/Release/ClearSightTests.exe
-- build/clear-sight-package/SKSE/Plugins/ClearSight.dll and ClearSight.ini
+- build/clear-sight-package/Runtime-1.7.104/SKSE/Plugins/ClearSight.dll and ClearSight.ini
+- build/clear-sight-package/Runtime-1.6.1170/SKSE/Plugins/ClearSight.dll and ClearSight.ini
 
-The tests compile and execute Direct3D shaders using WARP. They do not launch Skyrim. No game installation is needed to compile or run those tests. The plugin itself targets only Steam Skyrim 1.7.104.0 with SKSE64 2.3.1 and Address Library v13; SE/VR support paths are disabled.
+The installer definition is in packaging/fomod. Each runtime is a separate CMake configuration (`-DHC_TARGET_RUNTIME=1.7.104` or `1.6.1170`).
+
+The tests compile and execute Direct3D shaders using WARP. They do not launch Skyrim. No game installation is needed to compile or run those tests. Each plugin build targets exactly one runtime: Steam Skyrim 1.7.104.0 with SKSE64 2.3.1 and Address Library v13, or 1.6.1170.0 with SKSE64 2.2.6 and Address Library v11. SE (1.5.97)/VR support paths are disabled.
 
 ## Exact dependencies
 

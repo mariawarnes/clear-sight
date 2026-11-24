@@ -3,7 +3,7 @@
 Make Skyrim's scenery quieter and its characters and quest targets easier to distinguish. Clear Sight gives the world a reduced-detail greyscale treatment and highlights living characters and important objects with configurable colours, inspired by the accessibility modes in The Last of Us Part II and God of War Ragnarök.
 
 [b]Experimental release — version 0.3.13[/b]
-For Windows Steam Skyrim SE runtime 1.7.104.0 only, using the vanilla renderer. An intermittent crash when loading older saves has been reported. This release adds loading safeguards, but the cause and resolution are not yet confirmed. Keep backup saves and try this build in a separate mod-manager profile before relying on it for a long playthrough.
+For Windows Steam Skyrim SE runtime 1.7.104.0 or 1.6.1170.0 (choose in the installer), using the vanilla renderer. The 1.6.1170 build is newer and less tested. An intermittent crash when loading older saves has been reported. This release adds loading safeguards, but the cause and resolution are not yet confirmed. Keep backup saves and try this build in a separate mod-manager profile before relying on it for a long playthrough.
 
 [b]What the colours mean[/b]
 [list]
@@ -27,15 +27,15 @@ Blue does not necessarily mean a story ally. Characters in scripted scenes use S
 
 [b]Requirements[/b]
 [list]
-[*]Windows PC, Steam Skyrim Special Edition executable 1.7.104.0.
-[*][url=https://skse.silverlock.org/]SKSE64 2.3.1[/url], labelled the Anniversary Edition build. Compatibility depends on the executable version, not ownership of the Anniversary Upgrade content.
-[*][url=https://www.nexusmods.com/skyrimspecialedition/mods/32444?tab=files]Address Library All in One (1.7.104.0) v13[/url]. Download the main file, not the developer Offsets file.
+[*]Windows PC, Steam Skyrim Special Edition executable 1.7.104.0 or 1.6.1170.0. Check SkyrimSE.exe → Properties → Details → File version.
+[*][url=https://skse.silverlock.org/]SKSE64[/url] matching your executable: 2.3.1 for 1.7.104, or 2.2.6 for 1.6.1170. Compatibility depends on the executable version, not ownership of the Anniversary Upgrade content.
+[*][url=https://www.nexusmods.com/skyrimspecialedition/mods/32444?tab=files]Address Library All in One[/url] matching your executable: v13 for 1.7.104.0, or v11 (Anniversary Edition) for 1.6.1170.0. Download the main file, not the developer Offsets file.
 [/list]
-This release rejects other game runtimes. It does not support Skyrim VR, GOG builds, Legendary Edition or consoles. ENB and Community Shaders are not supported; detected installations disable the hooks.
+Each installed DLL rejects every other game runtime, so pick the installer option that matches your game. It does not support Skyrim VR, GOG builds, Legendary Edition or consoles. ENB and Community Shaders are not supported; detected installations disable the hooks.
 
 [b]Installation with Vortex[/b]
 1. Close Skyrim and install the requirements.
-2. Install the main ZIP with Vortex's Install From File, or Mod Manager Download once available. Leave Mod Type as Default.
+2. Install the main ZIP with Vortex's Install From File, or Mod Manager Download once available. When the installer asks, choose Skyrim 1.7.104 or Skyrim 1.6.1170 to match your game. Leave Mod Type as Default. After a game update, reinstall the mod and choose again.
 3. Enable the mod and Deploy Mods.
 4. Launch Skyrim through SKSE and load a save. Treatment resumes after the loading screen closes and the world has remained ready for approximately 1.5 seconds.
 5. Press Ctrl + Shift + H to toggle. On a MacBook streaming through Moonlight, use Control, not Command.

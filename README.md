@@ -1,10 +1,10 @@
 # Clear Sight — High Contrast Accessibility
 
-The current implementation is the **native SKSE plugin in `native/`**, targeting Steam Skyrim **1.7.104**. It treats world materials during geometry rendering, preserves normal maps and alpha, and uses game data to distinguish hostile actors, teammates and quest targets. Menus bypass treatment; HUD pixels are not processed.
+The current implementation is the **native SKSE plugin in `native/`**, targeting Steam Skyrim **1.7.104** or **1.6.1170** (a separate DLL per runtime, chosen in the installer). It treats world materials during geometry rendering, preserves normal maps and alpha, and uses game data to distinguish hostile actors, teammates and quest targets. Menus bypass treatment; HUD pixels are not processed.
 
-Use [native installation instructions](docs/NATIVE-INSTALL.md) and [validation results](docs/NATIVE-VALIDATION.md). Build with `./tools/Build-Native.ps1`, then package with `./tools/Package-Native.ps1`. The resulting `build/ClearSight-High-Contrast-Accessibility-0.3.13.zip` installs through Vortex as a **Default** mod. Toggle with **Ctrl + Shift + H**.
+Use [native installation instructions](docs/NATIVE-INSTALL.md) and [validation results](docs/NATIVE-VALIDATION.md). Build with `./tools/Build-Native.ps1` (builds both runtimes; pass `-Runtime 1.6.1170` for one), then package with `./tools/Package-Native.ps1`. The resulting `build/ClearSight-High-Contrast-Accessibility-0.3.13.zip` is a FOMOD installer: Vortex asks which Skyrim version to install for. Toggle with **Ctrl + Shift + H**.
 
-Dependencies: SKSE64 **2.3.1** and Address Library **v13** for Skyrim **1.7.104**. The native implementation does **not** need ReShade, Creation Kit, an ESP, or the scripts below. Disable the old ReShade prototype before using it. In-game appearance and stability still need verification; the build is experimental.
+Dependencies: SKSE64 **2.3.1** and Address Library **v13** for Skyrim **1.7.104**, or SKSE64 **2.2.6** and Address Library **v11** for Skyrim **1.6.1170**. The native implementation does **not** need ReShade, Creation Kit, an ESP, or the scripts below. Disable the old ReShade prototype before using it. In-game appearance and stability still need verification; the build is experimental.
 
 <details>
 <summary>Legacy ReShade/Papyrus prototype notes — superseded by the native implementation</summary>

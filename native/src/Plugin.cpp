@@ -571,19 +571,23 @@ void OnMessage(SKSE::MessagingInterface::Message* message)
 }
 }
 
+// Each DLL accepts exactly one runtime, chosen at build time (HC_TARGET_RUNTIME).
+// The Vortex installer asks which game version to install the matching DLL for.
+constexpr REL::Version targetRuntime{HC_RUNTIME_MAJOR, HC_RUNTIME_MINOR, HC_RUNTIME_PATCH, 0};
+
 SKSE_PLUGIN_VERSION = [] {
     SKSE::PluginVersionData data;
     data.PluginVersion({0,3,13,0});
     data.PluginName("Clear Sight - High Contrast Accessibility");
     data.AuthorName("mlw05");
     data.UsesAddressLibrary(); data.UsesUpdatedStructs();
-    data.CompatibleVersions({REL::Version{1,7,104,0}});
+    data.CompatibleVersions({targetRuntime});
     return data;
 }();
 
 SKSE_PLUGIN_LOAD(const SKSE::LoadInterface* skse)
 {
-    if (skse->RuntimeVersion() != REL::Version{1,7,104,0}) return false;
+    if (skse->RuntimeVersion() != targetRuntime) return false;
     SKSE::Init(skse);
     auto path = SKSE::log::log_directory();
     if (!path) return false;
@@ -592,7 +596,7 @@ SKSE_PLUGIN_LOAD(const SKSE::LoadInterface* skse)
     auto logger = std::make_shared<spdlog::logger>("ClearSight", sink);
     spdlog::set_default_logger(logger); spdlog::flush_on(spdlog::level::info);
     HC::ReadConfig();
-    spdlog::info("Clear Sight - High Contrast Accessibility 0.3.13; runtime {}", skse->RuntimeVersion().string());
+    spdlog::info("Clear Sight - High Contrast Accessibility 0.3.13 ({} build); runtime {}", targetRuntime.string(), skse->RuntimeVersion().string());
     if (!std::filesystem::exists("enbseries.ini")) HC::RendererInit::Install();
     SKSE::GetMessagingInterface()->RegisterListener("A11yControlPanel", HC::OnPanelMessage);
     return SKSE::GetMessagingInterface()->RegisterListener(HC::OnMessage);

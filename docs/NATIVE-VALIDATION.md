@@ -1,6 +1,8 @@
 # Clear Sight — Validation
 
-Target: Steam SkyrimSE.exe 1.7.104.0, SKSE64 2.3.1, Address Library format 5/v13.
+Target: Steam SkyrimSE.exe 1.7.104.0, SKSE64 2.3.1, Address Library format 5/v13. Secondary build: SkyrimSE.exe 1.6.1170.0, SKSE64 2.2.6, Address Library format 2/v11.
+
+- 1.6.1170 build (unreleased, 0.3.13 code): the plugin's accepted runtime is now a build setting (`HC_TARGET_RUNTIME`); the installer is a FOMOD offering one DLL per runtime. Both builds use the same CommonLib AE IDs. `Verify-Runtime.mjs` now also decodes compressed format-2 Address Library files; the decoder was checked against synthetic fixtures only. **Not yet done:** compiling the 1.6.1170 DLL, running `Verify-Runtime.mjs` against a real 1.6.1170 executable (including the renderer-init call at ID 77226 + 0x2bc, which may sit at a different offset), and any in-game run on 1.6.1170.
 
 ## Completed checks
 
@@ -57,6 +59,7 @@ The complete 0.3.6 build in Skyrim: local fire/magic light neutralization, death
 ./tools/Build-Native.ps1 -TestsOnly
 ./tools/Build-Native.ps1
 node ./tools/Verify-Runtime.mjs 'D:\SteamLibrary\steamapps\common\Skyrim Special Edition\SkyrimSE.exe' './build/versionlib-1-7-104-0.bin'
+# For a 1.6.1170 install, pass that SkyrimSE.exe and versionlib-1-6-1170-0.bin instead.
 ```
 
 The address-library test input is extracted locally from the user's downloaded archive and is not redistributed. Run the game checks in `NATIVE-INSTALL.md` after enabling the native package.

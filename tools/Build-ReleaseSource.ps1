@@ -24,15 +24,18 @@ if (-not (Test-Path -LiteralPath $vcpkg)) {
 }
 & $vcpkg install spdlog:x64-windows-static rapidcsv:x64-windows-static directxtk:x64-windows-static
 if ($LASTEXITCODE) { throw 'Dependency build failed.' }
-$buildDir = Join-Path $root 'build/native'
-& $cmake -S (Join-Path $root 'native') -B $buildDir -G 'Visual Studio 18 2026' -A x64 `
-    '-DHC_BUILD_PLUGIN=ON' "-DCOMMONLIB_SOURCE=$vendor" '-DCOMMONLIB_PREBUILT=OFF' `
-    "-DCMAKE_TOOLCHAIN_FILE=$vcpkgRoot/scripts/buildsystems/vcpkg.cmake" `
-    '-DVCPKG_TARGET_TRIPLET=x64-windows-static' '-DVCPKG_MANIFEST_MODE=OFF'
-if ($LASTEXITCODE) { throw 'CMake configuration failed.' }
-& $cmake --build $buildDir --config Release --parallel 4
-if ($LASTEXITCODE) { throw 'Compilation failed.' }
-& (Join-Path $buildDir 'Release/ClearSightTests.exe')
-if ($LASTEXITCODE) { throw 'Tests failed.' }
-& $cmake --install $buildDir --config Release --component Native --prefix (Join-Path $root 'build/clear-sight-package')
-if ($LASTEXITCODE) { throw 'Staging failed.' }
+# One DLL per supported runtime; the installer offers both.
+foreach ($target in @('1.7.104', '1.6.1170')) {
+    $buildDir = Join-Path $root $(if ($target -eq '1.7.104') { 'build/native' } else { "build/native-$target" })
+    & $cmake -S (Join-Path $root 'native') -B $buildDir -G 'Visual Studio 18 2026' -A x64 `
+        '-DHC_BUILD_PLUGIN=ON' "-DHC_TARGET_RUNTIME=$target" "-DCOMMONLIB_SOURCE=$vendor" '-DCOMMONLIB_PREBUILT=OFF' `
+        "-DCMAKE_TOOLCHAIN_FILE=$vcpkgRoot/scripts/buildsystems/vcpkg.cmake" `
+        '-DVCPKG_TARGET_TRIPLET=x64-windows-static' '-DVCPKG_MANIFEST_MODE=OFF'
+    if ($LASTEXITCODE) { throw 'CMake configuration failed.' }
+    & $cmake --build $buildDir --config Release --parallel 4
+    if ($LASTEXITCODE) { throw 'Compilation failed.' }
+    & (Join-Path $buildDir 'Release/ClearSightTests.exe')
+    if ($LASTEXITCODE) { throw 'Tests failed.' }
+    & $cmake --install $buildDir --config Release --component Native --prefix (Join-Path $root "build/clear-sight-package/Runtime-$target")
+    if ($LASTEXITCODE) { throw 'Staging failed.' }
+}
