@@ -10,9 +10,16 @@ $root = Split-Path -Parent $PSScriptRoot
 $vswhere = 'C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe'
 $vs = & $vswhere -latest -products '*' -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath
 if (-not $vs) { throw 'Visual Studio C++ build tools and Windows SDK are required.' }
+# VS 2026 is the documented toolchain; VS 2022 is accepted so hosted CI runners can build too.
+$vsVersion = & $vswhere -latest -products '*' -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationVersion
+$generator = switch -Regex ($vsVersion) {
+    '^18\.' { 'Visual Studio 18 2026' }
+    '^17\.' { 'Visual Studio 17 2022' }
+    default { throw "Unsupported Visual Studio version $vsVersion" }
+}
 $cmake = Join-Path $vs 'Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin/cmake.exe'
 if (-not (Test-Path -LiteralPath $cmake)) { throw 'Install the Visual Studio CMake component.' }
-$baseArgs = @('-S', (Join-Path $root 'native'), '-G', 'Visual Studio 18 2026', '-A', 'x64')
+$baseArgs = @('-S', (Join-Path $root 'native'), '-G', $generator, '-A', 'x64')
 function Invoke-NativeBuild([string]$buildDir, [string[]]$configureArgs, [string]$stageDir) {
     & $cmake @baseArgs -B $buildDir @configureArgs
     if ($LASTEXITCODE) { throw 'CMake configuration failed.' }

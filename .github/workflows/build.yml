@@ -1,0 +1,44 @@
+name: Build installer
+
+on:
+  push:
+    branches: [main, 'claude/**']
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    timeout-minutes: 240
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Show Visual Studio version
+        shell: pwsh
+        run: |
+          & 'C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe' -latest -products '*' -property installationVersion
+
+      # Builds ClearSight.dll for Skyrim 1.7.104 and 1.6.1170 and runs the GPU tests for each.
+      - name: Build both runtimes
+        shell: pwsh
+        run: ./tools/Build-Native.ps1
+
+      - name: Package FOMOD installer
+        shell: pwsh
+        run: ./tools/Package-Native.ps1
+
+      - name: Upload installer
+        uses: actions/upload-artifact@v4
+        with:
+          name: ClearSight-0.3.13-installer
+          path: build/ClearSight-High-Contrast-Accessibility-0.3.13.zip
+          if-no-files-found: error
+
+      - name: Upload build logs on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-logs
+          path: |
+            build/**/CMakeFiles/*.log
+            build/vcpkg/buildtrees/**/*.log
+          if-no-files-found: ignore
